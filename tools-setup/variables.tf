@@ -3,6 +3,9 @@ variable "tools" {
     vault = {
       vm_size = "Standard_B2als_v2"
     }
+    workstation = {
+      vm_size = "Standard_B2als_v2"
+    }
   }
 }
 
