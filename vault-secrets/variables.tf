@@ -17,7 +17,7 @@ variable "values" {
       secret = "roboshop-dev"
       value = {
         REDIS_HOST     = "redis-dev.mydevops.shop"
-        CATALOGUE_HOST = "catalogue-dev.mydevops.shop"
+        CATALOGUE_HOST = "catalogue"
         CATALOGUE_PORT = 8080
       }
     }
@@ -30,7 +30,6 @@ variable "values" {
         DB_TYPE     = "mongo"
         APP_GIT_URL = "https://github.com/roboshop-devops-project-v3/catalogue"
         DB_HOST     = "mongodb-dev.mydevops.shop"
-        SCHEMA_FILE = "db/master-data.js"
       }
     }
 
@@ -46,7 +45,7 @@ variable "values" {
     shipping = {
       secret = "roboshop-dev"
       value = {
-        CART_ENDPOINT = "cart-dev.mydevops.shop:8080"
+        CART_ENDPOINT = "cart:8080"
         DB_HOST       = "mysql-dev.mydevops.shop"
         DB_USER       = "root"
         DB_PASS       = "RoboShop@1"
@@ -60,9 +59,9 @@ variable "values" {
     payment = {
       secret = "roboshop-dev"
       value = {
-        CART_HOST = "cart-dev.mydevops.shop"
+        CART_HOST = "cart"
         CART_PORT = "8080"
-        USER_HOST = "user-dev.mydevops.shop"
+        USER_HOST = "user"
         USER_PORT = "8080"
         AMQP_HOST = "rabbitmq-dev.mydevops.shop"
         AMQP_USER = "roboshop"
@@ -78,15 +77,15 @@ variable "values" {
         cart_url       = "http://cart-dev.mydevops.shop:8080/"
         payment_url    = "http://payment-dev.mydevops.shop:8080/"
         shipping_url   = "http://shipping-dev.mydevops.shop:8080/"
-        CATALOGUE_HOST = "catalogue-dev.mydevops.shop"
+        CATALOGUE_HOST = "catalogue"
         CATALOGUE_PORT = 8080
-        USER_HOST      = "user-dev.mydevops.shop"
+        USER_HOST      = "user"
         USER_PORT      = 8080
-        CART_HOST      = "cart-dev.mydevops.shop"
+        CART_HOST      = "cart"
         CART_PORT      = 8080
-        SHIPPING_HOST  = "shipping-dev.mydevops.shop"
+        SHIPPING_HOST  = "shipping"
         SHIPPING_PORT  = 8080
-        PAYMENT_HOST   = "payment-dev.mydevops.shop"
+        PAYMENT_HOST   = "payment"
         PAYMENT_PORT   = 8080
 
 
