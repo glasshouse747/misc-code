@@ -9,6 +9,9 @@ variable "tools" {
     github-runner = {
       vm_size = "Standard_B2als_v2"
     }
+    test = {
+      vm_size = "Standard_B2als_v2"
+    }
   }
 }
 
