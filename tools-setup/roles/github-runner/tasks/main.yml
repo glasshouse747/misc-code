@@ -18,6 +18,7 @@
     name: docker
     state: started
     enabled: yes
+    daemon-reload: yes
 
 - name: Set Permissions
   ansible.builtin.shell: chmod o+rw /var/run/docker.sock
