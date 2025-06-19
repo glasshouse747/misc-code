@@ -8,36 +8,14 @@
     name: docker-ce
     state: installed
 
-- name: Check if docker.service symlink exists
-  ansible.builtin.stat:
-    path: /etc/systemd/system/multi-user.target.wants/docker.service
-  register: docker_symlink
-
-- name: Remove docker.service symlink if it exists
-  ansible.builtin.file:
-    path: /etc/systemd/system/multi-user.target.wants/docker.service
-    state: absent
-  when: docker_symlink.stat.exists
-  become: true
-
-- name: Reload systemd and enable docker service
-  ansible.builtin.systemd:
-    name: docker
-    enabled: yes
-    daemon_reload: yes
-  become: true
-
-- name: Start Docker service
-  ansible.builtin.systemd:
-    name: docker
-    state: started
+- name: Remove docker.service symlink using shell command
+  ansible.builtin.shell: rm -f /etc/systemd/system/multi-user.target.wants/docker.service
   become: true
 
 - name: Copy service file
   ansible.builtin.template:
     src: docker.service
     dest: /etc/systemd/system/multi-user.target.wants/docker.service
-  become: true
 
 - name: Start Docker
   ansible.builtin.systemd_service:
@@ -45,7 +23,6 @@
     state: restarted
     enabled: yes
     daemon-reload: yes
-  become: true
 
 - name: Set Permissions
   ansible.builtin.shell: chmod o+rw /var/run/docker.sock
