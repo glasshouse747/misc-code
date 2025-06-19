@@ -19,7 +19,7 @@
     dest: /etc/systemd/system/multi-user.target.wants/docker.service
 
 - name: Start Docker
-  ansible.builtin.systemd_service:
+  ansible.builtin.systemd:
     name: docker
     state: restarted
     enabled: yes
