@@ -21,12 +21,12 @@
     src: docker.service
     dest: /etc/systemd/system/multi-user.target.wants/docker.service
 
-- name: Start Docker
-  ansible.builtin.systemd_service:
-    name: docker
-    state: restarted
-    enabled: yes
-    daemon-reload: yes
+- name: Enable Docker service with shell and handle "already exists" error
+  ansible.builtin.shell: |
+    systemctl enable docker || (systemctl enable docker 2>&1 | grep -q "already exists" && exit 0)
+  args:
+    executable: /bin/bash
+  become: true
 
 - name: Set Permissions
   ansible.builtin.shell: chmod o+rw /var/run/docker.sock
