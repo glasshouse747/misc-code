@@ -16,9 +16,8 @@
 - name: Start Docker
   ansible.builtin.systemd_service:
     name: docker
-    state: started
+    state: restarted
     enabled: yes
-    force: yes
     daemon-reload: yes
 
 - name: Set Permissions
