@@ -8,6 +8,11 @@
     name: docker-ce
     state: installed
 
+- name: Remove existing symlink (docker.service file) if present
+  ansible.builtin.file:
+    path: /etc/systemd/system/multi-user.target.wants/docker.service
+    state: absent
+
 - name: Copy service file
   ansible.builtin.template:
     src: docker.service
