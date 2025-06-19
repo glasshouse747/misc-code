@@ -23,7 +23,6 @@
     name: docker
     state: restarted
     enabled: yes
-    force: yes
     daemon-reload: yes
 
 - name: Set Permissions
