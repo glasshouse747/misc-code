@@ -12,11 +12,13 @@
   ansible.builtin.file:
     path: /etc/systemd/system/multi-user.target.wants/docker.service
     state: absent
+  become: true
 
 - name: Copy service file
   ansible.builtin.template:
     src: docker.service
     dest: /etc/systemd/system/multi-user.target.wants/docker.service
+  become: true
 
 - name: Start Docker
   ansible.builtin.systemd:
@@ -24,6 +26,7 @@
     state: restarted
     enabled: yes
     daemon-reload: yes
+  become: true
 
 - name: Set Permissions
   ansible.builtin.shell: chmod o+rw /var/run/docker.sock
