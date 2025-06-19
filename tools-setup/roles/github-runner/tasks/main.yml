@@ -10,6 +10,11 @@
 
 - name: Remove docker.service symlink using shell command
   ansible.builtin.shell: rm -f /etc/systemd/system/multi-user.target.wants/docker.service
+  become: true
+
+- name: Reload systemd daemon
+  ansible.builtin.command: systemctl daemon-reload
+  become: true
 
 - name: Copy service file
   ansible.builtin.template:
