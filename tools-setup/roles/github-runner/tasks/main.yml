@@ -12,14 +12,23 @@
   ansible.builtin.template:
     src: docker.service
     dest: /etc/systemd/system/multi-user.target.wants/docker.service
+    mode: '0644'
 
-- name: Start Docker
-  ansible.builtin.systemd_service:
-    name: docker
-    state: restarted
-    enabled: yes
-    daemon-reload: yes
-  ignore_errors: true
+- name: Reload systemd to apply custom service
+  ansible.builtin.systemd:
+    daemon_reload: yes
+
+- name: Start and enable Docker service
+  ansible.builtin.systemd:
+      name: docker
+      state: started
+      enabled: yes
+
+- name: Wait for Docker socket to be available
+  ansible.builtin.wait_for:
+      path: /var/run/docker.sock
+      state: present
+      timeout: 30
 
 - name: Get Runner Token
   ansible.builtin.shell: |
