@@ -8,28 +8,17 @@
     name: docker-ce
     state: installed
 
-- name: Remove docker.service symlink using shell command
-  ansible.builtin.shell: rm -f /etc/systemd/system/multi-user.target.wants/docker.service
-  become: true
-
-- name: Reload systemd daemon
-  ansible.builtin.command: systemctl daemon-reload
-  become: true
-
 - name: Copy service file
   ansible.builtin.template:
     src: docker.service
     dest: /etc/systemd/system/multi-user.target.wants/docker.service
 
-- name: Enable Docker service with shell and handle "already exists" error
-  ansible.builtin.shell: |
-    systemctl enable docker || (systemctl enable docker 2>&1 | grep -q "already exists" && exit 0)
-  args:
-    executable: /bin/bash
-  become: true
-
-- name: Set Permissions
-  ansible.builtin.shell: sudo chmod o+rw /var/run/docker.sock
+- name: Start Docker
+  ansible.builtin.systemd_service:
+    name: docker
+    state: restarted
+    enabled: yes
+    daemon-reload: yes
 
 - name: Get Runner Token
   ansible.builtin.shell: |
