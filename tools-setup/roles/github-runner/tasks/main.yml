@@ -8,9 +8,10 @@
     name: docker-ce
     state: installed
 
-- name: Remove docker.service symlink using shell command
-  ansible.builtin.shell: rm -f /etc/systemd/system/multi-user.target.wants/docker.service
-  become: true
+- name: Remove broken/duplicate Docker service symlink
+  ansible.builtin.file:
+    path: /etc/systemd/system/multi-user.target.wants/docker.service
+    state: absent
 
 - name: Reload systemd daemon
   ansible.builtin.command: systemctl daemon-reload
@@ -26,6 +27,8 @@
     name: docker
     state: started
     enabled: yes
+    daemon_reload: yes
+    force: yes
 
 - name: Wait for Docker socket to be available
   ansible.builtin.wait_for:
