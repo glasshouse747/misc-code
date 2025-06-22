@@ -8,33 +8,18 @@
     name: docker-ce
     state: installed
 
-- name: Ensure Docker group exists
-  ansible.builtin.group:
-    name: docker
-    state: present
-
-- name: Add azuser to docker group
-  ansible.builtin.user:
-    name: azuser
-    groups: docker
-    append: yes
-
 - name: Copy service file
   ansible.builtin.template:
     src: docker.service
     dest: /etc/systemd/system/multi-user.target.wants/docker.service
 
-- name: Enable Docker service with shell and handle "already exists" error
-  ansible.builtin.shell: |
-    systemctl enable docker || (systemctl enable docker 2>&1 | grep -q "already exists" && exit 0)
-  args:
-    executable: /bin/bash
-  become: true
-
-- name: Set permissions on Docker socket
-  ansible.builtin.file:
-    path: /var/run/docker.sock
-    mode: '0666'
+- name: Start Docker
+  ansible.builtin.systemd_service:
+    name: docker
+    state: restarted
+    enabled: yes
+    daemon-reload: yes
+  ignore_errors: true
 
 - name: Get Runner Token
   ansible.builtin.shell: |
@@ -63,3 +48,4 @@
       ARM_CLIENT_ID:  "{{ lookup('community.hashi_vault.hashi_vault', 'secret=roboshop-infra/data/azure-sp:ARM_CLIENT_ID token={{ token }} url=http://vault-int.mydevops.shop:8200') }}"
       ARM_CLIENT_SECRET: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=roboshop-infra/data/azure-sp:ARM_CLIENT_SECRET token={{ token }} url=http://vault-int.mydevops.shop:8200') }}"
       ARM_TENANT_ID: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=roboshop-infra/data/azure-sp:ARM_TENANT_ID token={{ token }} url=http://vault-int.mydevops.shop:8200') }}"
+
