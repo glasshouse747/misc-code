@@ -31,11 +31,6 @@
     executable: /bin/bash
   become: true
 
-- name: Wait for Docker socket to exist
-  ansible.builtin.wait_for:
-    path: /var/run/docker.sock
-    timeout: 30
-
 - name: Set permissions on Docker socket
   ansible.builtin.file:
     path: /var/run/docker.sock
