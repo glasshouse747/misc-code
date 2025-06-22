@@ -13,21 +13,13 @@
     path: /etc/systemd/system/multi-user.target.wants/docker.service
     state: absent
 
-- name: Reload systemd daemon
-  ansible.builtin.command: systemctl daemon-reload
-  become: true
-
-- name: Copy service file
-  ansible.builtin.template:
-    src: docker.service
-    dest: /etc/systemd/system/multi-user.target.wants/docker.service
-
-- name: Enable Docker service (ignore "already enabled" error)
-  ansible.builtin.shell: |
-    systemctl enable docker || (systemctl enable docker 2>&1 | grep -q "already exists" && exit 0)
-  args:
-    executable: /bin/bash
-  become: true
+- name: Start and enable Docker service
+  ansible.builtin.systemd:
+    name: docker
+    state: started
+    enabled: yes
+    daemon_reload: yes
+    force: yes
 
 - name: Wait for Docker socket to be available
   ansible.builtin.wait_for:
