@@ -28,8 +28,16 @@
     executable: /bin/bash
   become: true
 
-- name: Set Permissions
-  ansible.builtin.shell: chmod o+rw /var/run/docker.sock
+- name: Wait for Docker socket to be available
+  ansible.builtin.wait_for:
+    path: /var/run/docker.sock
+    state: present
+    timeout: 30
+
+- name: Change Docker socket permissions
+  ansible.builtin.file:
+    path: /var/run/docker.sock
+    mode: '0666'
 
 - name: Get Runner Token
   ansible.builtin.shell: |
