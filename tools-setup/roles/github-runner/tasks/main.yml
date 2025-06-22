@@ -8,11 +8,6 @@
     name: docker-ce
     state: installed
 
-- name: Remove broken/duplicate Docker service symlink
-  ansible.builtin.file:
-    path: /etc/systemd/system/multi-user.target.wants/docker.service
-    state: absent
-
 - name: Start and enable Docker service
   ansible.builtin.systemd:
     name: docker
