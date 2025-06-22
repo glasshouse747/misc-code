@@ -8,27 +8,28 @@
     name: docker-ce
     state: installed
 
+- name: Remove docker.service symlink using shell command
+  ansible.builtin.shell: rm -f /etc/systemd/system/multi-user.target.wants/docker.service
+  become: true
+
+- name: Reload systemd daemon
+  ansible.builtin.command: systemctl daemon-reload
+  become: true
+
 - name: Copy service file
   ansible.builtin.template:
     src: docker.service
     dest: /etc/systemd/system/multi-user.target.wants/docker.service
-    mode: '0644'
 
-- name: Reload systemd to apply custom service
-  ansible.builtin.systemd:
-    daemon_reload: yes
+- name: Enable Docker service with shell and handle "already exists" error
+  ansible.builtin.shell: |
+    systemctl enable docker || (systemctl enable docker 2>&1 | grep -q "already exists" && exit 0)
+  args:
+    executable: /bin/bash
+  become: true
 
-- name: Start and enable Docker service
-  ansible.builtin.systemd:
-      name: docker
-      state: started
-      enabled: yes
-
-- name: Wait for Docker socket to be available
-  ansible.builtin.wait_for:
-      path: /var/run/docker.sock
-      state: present
-      timeout: 30
+- name: Set Permissions
+  ansible.builtin.shell: chmod o+rw /var/run/docker.sock
 
 - name: Get Runner Token
   ansible.builtin.shell: |
@@ -57,4 +58,3 @@
       ARM_CLIENT_ID:  "{{ lookup('community.hashi_vault.hashi_vault', 'secret=roboshop-infra/data/azure-sp:ARM_CLIENT_ID token={{ token }} url=http://vault-int.mydevops.shop:8200') }}"
       ARM_CLIENT_SECRET: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=roboshop-infra/data/azure-sp:ARM_CLIENT_SECRET token={{ token }} url=http://vault-int.mydevops.shop:8200') }}"
       ARM_TENANT_ID: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=roboshop-infra/data/azure-sp:ARM_TENANT_ID token={{ token }} url=http://vault-int.mydevops.shop:8200') }}"
-
