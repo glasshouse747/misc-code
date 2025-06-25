@@ -2,7 +2,5 @@
   hosts: all
   become: true
   roles:
-    - "{{ tool_name }}"
-
-
+    - role: "{{ tool_name }}"
 
