@@ -6,6 +6,7 @@ variable "tools" {
     workstation = {
       vm_size = "Standard_B2als_v2"
     }
+
     # github-runner = {
     #   vm_size = "Standard_B2als_v2"
     # }
@@ -13,6 +14,7 @@ variable "tools" {
     #   vm_size = "Standard_E2bds_v5"
     #   spot    = true
     # }
+
   }
 
 }
