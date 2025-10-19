@@ -15,7 +15,7 @@ variable "tools" {
     # elk-stack = {
     #   vm_size = "Standard_E2bds_v5"
     #   spot    = true
-    # }
+    # }make
 
   }
 }
