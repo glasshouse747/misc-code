@@ -15,7 +15,12 @@ variable "tools" {
     # elk-stack = {
     #   vm_size = "Standard_E2bds_v5"
     #   spot    = true
-    # }make
+    # }
+
+    sonarqube = {
+      vm_size = "Standard_DS2_v2"
+      spot    = true
+    }
 
   }
 }
