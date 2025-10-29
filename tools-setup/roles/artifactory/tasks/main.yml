@@ -3,7 +3,6 @@
     url: https://releases.jfrog.io/artifactory/artifactory-rpms/artifactory-rpms.repo
     dest: /etc/yum.repos.d/artifactory-rpms.repo
 
-
 - name: Install Artifactory
   ansible.builtin.dnf:
     name: jfrog-artifactory-oss
