@@ -9,6 +9,12 @@
     name: jfrog-artifactory-oss
     state: installed
 
+
+- name: Copy system.yaml file
+  ansible.builtin.template:
+    src: system.yaml
+    dest: /opt/jfrog/artifactory/var/etc/system.yaml
+
 - name: Start Artifactory
   ansible.builtin.systemd_service:
     name: artifactory
