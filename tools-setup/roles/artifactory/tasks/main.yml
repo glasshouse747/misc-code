@@ -9,7 +9,6 @@
     name: jfrog-artifactory-oss
     state: installed
 
-
 - name: Copy system.yaml file
   ansible.builtin.template:
     src: system.yaml
