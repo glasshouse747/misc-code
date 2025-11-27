@@ -8,9 +8,9 @@ variable "tools" {
       vm_size = "Standard_B2als_v2"
     }
 
-    github-runner = {
-      vm_size = "Standard_B2als_v2"
-    }
+    # github-runner = {
+    #   vm_size = "Standard_B2als_v2"
+    # }
 
     # elk-stack = {
     #   vm_size = "Standard_E2bds_v5"
